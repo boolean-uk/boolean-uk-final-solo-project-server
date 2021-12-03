@@ -20,6 +20,7 @@ app.get("*", (req: Request, res:Response) => {
     res.json({ Test: true });
 });
 
+// make server listen on some port
 ((port = process.env.APP_PORT || 4000) => {
-    app.listen(port, () => console.log(`\n🚀 Server is running on http://localhost:${port}/\n`))
-})
+    app.listen(port, () => console.log(`\n🚀 Server is running on http://localhost:${port}/\n`));
+  })();
