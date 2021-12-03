@@ -6,6 +6,8 @@ const morgan = require("morgan")
 
 const app = express()
 
+const signupRouter = require("./resources/auth/router")
+
 /* SETUP MIDDLEWARE */
 
 app.disable("x-powered-by")
@@ -16,6 +18,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan("dev"))
 
 /* SETUP ROUTES */
+
+app.use("/auth", signupRouter)
 
 app.get("*", (req, res) => {
   res.json({ ok: true })
