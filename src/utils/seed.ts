@@ -1,12 +1,13 @@
-import { User } from '.prisma/client';
-import dbClient from '../src/utils/dbClient'
+import { PrismaClient } from '@prisma/client';
+
+const dbClient = new PrismaClient
 
 async function seed() {
 await dbClient.user.deleteMany();
 
 console.log(`Start Seeding`)
 
-const user:User = await dbClient.user.create({
+const user = await dbClient.user.create({
     data: {
 email: 'Emmanuel',
 password: 'qwerty'
