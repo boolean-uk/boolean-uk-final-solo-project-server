@@ -6,7 +6,7 @@ async function getAllGames(req, res) {
   try {
     const games = await prisma.games.findMany({
       where: {
-        userId: r,
+        userId,
       },
     });
     res.json({ games });
