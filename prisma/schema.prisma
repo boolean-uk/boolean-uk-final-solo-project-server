@@ -9,8 +9,47 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique @db.VarChar(100)
-  email    String @unique
-  password String @db.VarChar(255)
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   @db.VarChar(255)
+  validated Boolean  @default(false)
+  profile   Profile?
+  role      Role     @default(USER)
+  trades    Trade[]
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  firstName   String   @db.VarChar(255)
+  lastName    String   @db.VarChar(255)
+  dob         DateTime
+  mainAddress String   @db.VarChar(255)
+  city        String   @db.VarChar(255)
+  country     String   @db.VarChar(255)
+  postcode    String   @db.VarChar(8)
+  newsLetter  Boolean
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+}
+
+model Trade {
+  id          String    @id @default(uuid())
+  assetName   String    @db.VarChar(255)
+  assetSymbol String    @db.VarChar(10)
+  date        DateTime
+  price       Float
+  quantity    Float
+  type        TradeType
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum TradeType {
+  BUY
+  SELL
 }

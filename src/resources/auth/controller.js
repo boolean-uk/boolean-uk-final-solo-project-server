@@ -11,7 +11,7 @@ async function signup(req, res){
     
     const hashedPass = await bycript.hash(userPassword, rounds)
 
-    const random_uname = crypto.randomBytes(15).toString('hex');
+    // const random_uname = crypto.randomBytes(15).toString('hex');
 
     try {
 
@@ -19,7 +19,6 @@ async function signup(req, res){
             data: { 
                 email : userEmail,
                 password : hashedPass,
-                username : random_uname
             }
         })
 
