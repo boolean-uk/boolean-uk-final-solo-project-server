@@ -1,7 +1,6 @@
-const prisma = require('../..//utils/dbClient')
+const prisma = require('../../utils/dbClient')
 const bycript = require('bcrypt')
-const createToken = require('../../utils/authentification');
-const crypto = require('crypto');
+const {createToken} = require('../../utils/authentification');
 
 const rounds = 9;
 
@@ -11,14 +10,16 @@ async function signup(req, res){
     
     const hashedPass = await bycript.hash(userPassword, rounds)
 
-    // const random_uname = crypto.randomBytes(15).toString('hex');
-
     try {
 
         const user = await prisma.user.create({
             data: { 
                 email : userEmail,
                 password : hashedPass,
+            },
+            select : { 
+                id : true,
+                email: true
             }
         })
 
@@ -39,7 +40,7 @@ async function login(req, res) {
     const {email: inputEmail, password: inputPassword} = req.body
 
     if(!inputEmail || !inputPassword) { 
-        res.status(400).json({ error: "Username or Password is missing\n Please verify the credentials have been added accordingly and try again!"})
+        res.status(400).json({ error: "Username or Password is missing\n Please verify both credentials and try again!"})
     }
     
     try {
@@ -62,11 +63,6 @@ async function login(req, res) {
             }
 
             delete userToTokenise.password
-            delete userToTokenise.username
-
-            // userToTokenise.forEach((username, password) => {
-            //     delete userToTokenise[username, password]
-            // });
 
             const token = createToken(userToTokenise)
 

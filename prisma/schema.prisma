@@ -34,9 +34,8 @@ model Profile {
 
 model Trade {
   id          String    @id @default(uuid())
-  assetName   String    @db.VarChar(255)
   assetSymbol String    @db.VarChar(10)
-  date        DateTime
+  date        DateTime  @default(now())
   price       Float
   quantity    Float
   type        TradeType
