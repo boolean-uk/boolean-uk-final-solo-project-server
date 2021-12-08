@@ -8,7 +8,7 @@ const app = express()
 
 const signupRouter = require("./resources/auth/router")
 const tradesRouter = require("./resources/trades/router")
-const {protect} = require('./utils/authentification')
+const {protect} = require('./utils/authentication')
 
 /* SETUP MIDDLEWARE */
 

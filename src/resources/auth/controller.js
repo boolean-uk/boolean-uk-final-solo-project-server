@@ -1,6 +1,6 @@
 const prisma = require('../../utils/dbClient')
 const bycript = require('bcrypt')
-const {createToken} = require('../../utils/authentification');
+const {createToken} = require('../../utils/authentication');
 
 const rounds = 9;
 
