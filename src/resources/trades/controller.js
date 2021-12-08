@@ -2,17 +2,17 @@ const prisma = require('../../utils/dbClient');
 
 async function getAssets(req, res) { 
 
+    console.log("here")
+    
     try {
-
+        
         const userAssets = await prisma.trade.findMany({
             where : { 
                 userId : req.user.id
-            },
-            include : { 
-                user : true
             }
         })
-
+        
+        console.log({userAssets})
         res.status(200).json({userAssets})
         
     } catch (error) {

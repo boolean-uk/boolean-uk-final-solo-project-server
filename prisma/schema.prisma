@@ -37,7 +37,7 @@ model Trade {
   assetSymbol String    @db.VarChar(10)
   date        DateTime  @default(now())
   price       Float
-  quantity    Float
+  quantity    Int
   type        TradeType
   user        User      @relation(fields: [userId], references: [id])
   userId      String
