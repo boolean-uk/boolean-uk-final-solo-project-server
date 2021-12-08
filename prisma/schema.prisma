@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Recipe {
+  id          Int                    @id @default(autoincrement())
+  name        String                 @db.VarChar(255)
+  totalTime   Int
+  serving     Int
+  dishType    String                 @db.VarChar(255)
+  instruction String
+  calories    Int
+  protein     Int
+  fat         Int
+  carbs       Int
+  ingredients IngredientsOnRecipes[]
+}
+
+model Ingredient {
+  id      Int                    @id @default(autoincrement())
+  name    String                 @db.VarChar(255)
+  img     String
+  recipes IngredientsOnRecipes[]
+  prices  Price[]
+}
+
+model IngredientsOnRecipes {
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  recipeId     Int
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+
+  @@id([recipeId, ingredientId])
+}
+
+model Price {
+  id            Int        @id @default(autoincrement())
+  price         Float
+  unitOfMeasure String     @db.VarChar(255)
+  ingredient    Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId  Int
+}
