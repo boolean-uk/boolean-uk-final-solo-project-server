@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   @db.VarChar(255)
+  profile   Profile?
+  role      Role     @default(USER)
+  trades    Trade[]
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  firstName   String   @db.VarChar(255)
+  lastName    String   @db.VarChar(255)
+  dob         DateTime
+  mainAddress String   @db.VarChar(255)
+  city        String   @db.VarChar(255)
+  country     String   @db.VarChar(255)
+  postcode    String   @db.VarChar(8)
+  validated   Boolean  @default(false)
+  subscribed  Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+}
+
+model Trade {
+  id          String    @id @default(uuid())
+  assetSymbol String    @db.VarChar(10)
+  date        DateTime  @default(now())
+  price       Float
+  quantity    Int
+  type        TradeType
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum TradeType {
+  BUY
+  SELL
+}
